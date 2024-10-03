@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Flaskr</title>
-    <a class="btn btn-info" role="button" href="{{ url_for('search') }}">Search</a>
     <link
       rel="stylesheet"
       type="text/css"
@@ -13,16 +12,14 @@
     <div class="container">
       <br /><br />
       <h1>Flaskr</h1>
+      <!-- Move the Search button here inside the body -->
+      <a class="btn btn-info mb-3" role="button" href="{{ url_for('search') }}">Search</a>
       <br /><br />
 
       {% if not session.logged_in %}
-      <a class="btn btn-success" role="button" href="{{ url_for('login') }}"
-        >log in</a
-      >
+      <a class="btn btn-success" role="button" href="{{ url_for('login') }}">log in</a>
       {% else %}
-      <a class="btn btn-warning" role="button" href="{{ url_for('logout') }}"
-        >log out</a
-      >
+      <a class="btn btn-warning" role="button" href="{{ url_for('logout') }}">log out</a>
       {% endif %}
 
       <br /><br />
@@ -31,7 +28,9 @@
       <div class="flash alert alert-success col-sm-4" role="success">
         {{ message }}
       </div>
-      {% endfor %} {% if session.logged_in %}
+      {% endfor %}
+      
+      {% if session.logged_in %}
       <form
         action="{{ url_for('add_entry') }}"
         method="post"
