@@ -1,13 +1,4 @@
-# Imports Flask.
-# Creates a Flask app instance.
-# Sets up a single route (/) that returns "Hello, World!" when accessed.
-# having the SQLite database configuration, loads it into the flask app
-
-# connect_db(): Establishes a connection to the SQLite database.
-# init_db(): Creates the database using the schema in schema.sql.
-# get_db(): Retrieves the current database connection or establishes a new one.
-# close_db(): Ensures the database connection is closed after each request.
-
+import os
 import sqlite3
 from pathlib import Path
 
@@ -23,7 +14,16 @@ DATABASE = "flaskr.db"
 USERNAME = "admin"
 PASSWORD = "admin"
 SECRET_KEY = "change_me"
-SQLALCHEMY_DATABASE_URI = f'sqlite:///{Path(basedir).joinpath(DATABASE)}'
+
+# Retrieve DATABASE_URL environment variable for PostgreSQL connection
+url = os.getenv('DATABASE_URL', f'sqlite:///{Path(basedir).joinpath(DATABASE)}')
+
+# Fix PostgreSQL URL formatting if needed (Render uses "postgres://")
+if url.startswith("postgres://"):
+    url = url.replace("postgres://", "postgresql://", 1)
+
+# Updated configuration to use DATABASE_URL for PostgreSQL or fallback to SQLite
+SQLALCHEMY_DATABASE_URI = url
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # create and initialize a new Flask app
